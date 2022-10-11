@@ -23,16 +23,15 @@ const connectRoom = async () => {
   connectButton.innerHTML = 'connecting';
   connectButton.disabled = connected;
   // 1. 로그인
-  await ConnectLive.default.signIn({
+  await ConnectLive.signIn({
       serviceId: 'ICLEXMPLPUBL',
-      serviceKey: 'ICLEXMPLPUBL0KEY',
-      secret: 'YOUR0SRVC0SECRET',
+      serviceSecret: 'ICLEXMPLPUBL0KEY:YOUR0SRVC0SECRET',
   });
   connectButton.innerHTML = 'log-in is successful';
   // 2. local media 얻기
-  localMedia = await ConnectLive.default.createLocalMedia({ audio: true });
+  localMedia = await ConnectLive.createLocalMedia({ audio: true });
   // 3. room을 만들거나 특정 room에 접속하고 이벤트 처리하기
-  room = await ConnectLive.default.createRoom();
+  room = await ConnectLive.createRoom();
   if (!room) {
     connectButton.innerHTML = 'failed to create room';
     throw new Error('Failed to create room');
@@ -58,7 +57,7 @@ const disconnectRoom = async () => {
   if (!room || !localMedia) return;
   room.disconnect();
   localMedia.stop();
-  ConnectLive.default.signOut();
+  ConnectLive.signOut();
   connected = false;
   connectButton.innerHTML = 'Connect';
   connectButton.disabled = connected;
